@@ -1,0 +1,17 @@
+{
+  "name": "roverabackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "karthik",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.3"
+  }
+}
