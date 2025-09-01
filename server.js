@@ -24,7 +24,7 @@ wss.on("connection", (ws) => {
   ws.on("message", (msg) => {
     try {
       const data = JSON.parse(msg);
-      console.log("📩 Received:", data);
+      // console.log("📩 Received:", data);
 
       if (data.type === "register") {
         clients[data.uniqueId] = ws;
@@ -47,6 +47,7 @@ wss.on("connection", (ws) => {
         }
       }
       else if (data.type === "gps") {
+        console.log("📍 GPS data received:", data);
   const roverid = data.uniqueId;
   const controllerid = roverToController[roverid];
 
