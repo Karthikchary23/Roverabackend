@@ -63,25 +63,29 @@ wss.on("connection", (ws) => {
           console.log(`📡 Forwarded GPS from ${roverid} → ${controllerid}`);
         }
       } else if (data.type === "send_instruction") {
-        const { fromId, leftMotor, rightMotor, command } = data;
+        const { fromId, throttle, steering, command } = data;
         const roverid = controllerToRover[fromId];
 
         if (roverid && clients[roverid]) {
+          // Forward throttle/steering if present, else forward discrete command
           const payload = { type: "receive_instruction" };
           if (
-            typeof leftMotor !== "undefined" &&
-            typeof rightMotor !== "undefined"
+            typeof throttle !== "undefined" &&
+            typeof steering !== "undefined"
           ) {
-            payload.leftMotor = leftMotor;
-            payload.rightMotor = rightMotor;
+            payload.throttle = throttle;
+            payload.steering = steering;
           }
           if (command) payload.command = command;
 
           clients[roverid].send(JSON.stringify(payload));
-          console.log(`➡️ Forwarded from ${fromId} → ${roverid}`, payload);
+          console.log(
+            `➡️ Forwarded instruction from ${fromId} → ${roverid}`,
+            payload
+          );
+        } else {
+          console.log(`⚠️ No rover linked for ${fromId}`);
         }
-      } else {
-        console.log(`⚠️ No rover linked for ${fromId}`);
       }
     } catch (err) {
       console.error("❌ Error parsing message:", err);
