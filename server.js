@@ -86,6 +86,23 @@ wss.on("connection", (ws) => {
         } else {
           console.log(`⚠️ No rover linked for ${fromId}`);
         }
+      } else if (data.type === "mode_change") {
+        const { fromId, mode } = data;
+        const roverid = controllerToRover[fromId];
+
+        if (roverid && clients[roverid]) {
+          clients[roverid].send(
+            JSON.stringify({
+              type: "mode_update",
+              mode,
+            })
+          );
+          console.log(
+            `🔄 Mode change from ${fromId} → Rover ${roverid}: ${mode}`
+          );
+        } else {
+          console.log(`⚠️ No rover linked for ${fromId}, mode not forwarded`);
+        }
       }
     } catch (err) {
       console.error("❌ Error parsing message:", err);
