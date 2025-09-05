@@ -48,7 +48,7 @@ wss.on("connection", (ws) => {
           );
         }
       } else if (data.type === "gps") {
-        console.log("📍 GPS data received:", data);
+        // console.log("📍 GPS data received:", data);
         const roverid = data.uniqueId;
         const controllerid = roverToController[roverid];
 
@@ -60,7 +60,7 @@ wss.on("connection", (ws) => {
               data: data.data,
             })
           );
-          console.log(`📡 Forwarded GPS from ${roverid} → ${controllerid}`);
+          // console.log(`📡 Forwarded GPS from ${roverid} → ${controllerid}`);
         }
       } else if (data.type === "send_instruction") {
         const { fromId, throttle, steering, command } = data;
@@ -79,12 +79,12 @@ wss.on("connection", (ws) => {
           if (command) payload.command = command;
 
           clients[roverid].send(JSON.stringify(payload));
-          console.log(
-            `➡️ Forwarded instruction from ${fromId} → ${roverid}`,
-            payload
-          );
+          // console.log(
+          //   `➡️ Forwarded instruction from ${fromId} → ${roverid}`,
+          //   payload
+          // );
         } else {
-          console.log(`⚠️ No rover linked for ${fromId}`);
+          // console.log(`⚠️ No rover linked for ${fromId}`);
         }
       } else if (data.type === "mode_change") {
         const { fromId, mode } = data;
@@ -101,7 +101,7 @@ wss.on("connection", (ws) => {
             `🔄 Mode change from ${fromId} → Rover ${roverid}: ${mode}`
           );
         } else {
-          console.log(`⚠️ No rover linked for ${fromId}, mode not forwarded`);
+          // console.log(`⚠️ No rover linked for ${fromId}, mode not forwarded`);
         }
       }
     } catch (err) {
